@@ -4,6 +4,7 @@ APP_NAME := goura
 GO_FILES_CMD := find . -name 'vendor' -prune -o -name '*.go' -print
 GO_PATHS_CMD := $(GO_FILES_CMD) | awk -F/ '{ print $$1 "/" $$2 }' | uniq
 PACKAGES_CMD := $(GO_PATHS_CMD) | grep -v '\.go$$' | awk -F/ '{ print $$0 "/..." }'
+GO_TEST_CMD := go test -v -race -p 1 $(GO_TEST_FLAGS)
 GO_PATHS := $(shell $(GO_PATHS_CMD))
 PACKAGES := . $(shell $(PACKAGES_CMD))
 
@@ -24,6 +25,10 @@ docker.run: ## Run on docker
 .PHONY: lint
 lint: ## Run static code analysis
 	@golangci-lint run $(PACKAGES)
+
+.PHONY: test
+test: ## Run code test
+	$(GO_TEST_CMD) $(PACKAGES)
 
 .PHONY: help
 help: ## Show options

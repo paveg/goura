@@ -17,6 +17,7 @@ build: ## Build go binary
 docker.build: ## Build docker image
 	@docker build -f ./Dockerfile -t $(APP_NAME):latest .
 
+.PHONY: docker.run
 docker.run: ## Run on docker
 	@docker run -it --rm $(APP_NAME):latest
 

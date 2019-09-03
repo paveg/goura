@@ -1,0 +1,10 @@
+name: golangci-lint
+on: [push]
+jobs:
+  lint:
+    name: Analyze code
+  steps:
+    - uses: actions/checkout@master
+    - name: golangci-lint run
+      run: |
+        make lint

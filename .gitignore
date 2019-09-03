@@ -16,3 +16,5 @@
 
 # For JebBrains tool.
 .idea
+
+bin/

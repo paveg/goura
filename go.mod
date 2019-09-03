@@ -1,3 +1,3 @@
 module github.com/paveg/goura
 
-go 1.13
+go 1.12

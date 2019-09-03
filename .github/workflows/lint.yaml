@@ -3,8 +3,16 @@ on: [push]
 jobs:
   lint:
     name: Analyze code
-  steps:
-    - uses: actions/checkout@master
-    - name: golangci-lint run
-      run: |
-        make lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.12.9
+        id: go
+      - name: Prepare
+        run: |
+          go mod download
+          go mod tidy
+      - name: golangci-lint run
+        run: make lint

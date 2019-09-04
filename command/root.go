@@ -12,15 +12,18 @@ import (
 var configFile string
 
 const (
-	failedExecution int = 1
+	failedExecution int    = 1
+	configFileName  string = ".goura.yaml"
 )
 
 // NewCommandRoot initializes a root command function.
 func NewCommandRoot() *cobra.Command {
 	command := &cobra.Command{
-		Use:   "goura",
-		Short: "goura is a API client of Oura Cloud",
-		Long:  "goura is a Unofficial API client of Oura Cloud written in Go.\nComplete documentation is available at https://github.com/paveg/goura",
+		Use:           "goura",
+		Short:         "goura is a API client of Oura Cloud",
+		Long:          "goura is a Unofficial API client of Oura Cloud written in Go.\nComplete documentation is available at https://github.com/paveg/goura",
+		SilenceErrors: true,
+		SilenceUsage:  true,
 	}
 	cobra.OnInitialize(initConfig)
 
@@ -41,7 +44,7 @@ func initConfig() {
 		}
 
 		viper.AddConfigPath(home)
-		viper.SetConfigName(".goura")
+		viper.SetConfigName(configFileName)
 	}
 
 	viper.AutomaticEnv()

@@ -9,6 +9,11 @@ GO_PATHS := $(shell $(GO_PATHS_CMD))
 PACKAGES := . $(shell $(PACKAGES_CMD))
 
 ARTIFACT := ./bin/$(APP_NAME)
+BIN_DIR := $(CURDIR)/bin
+
+.PHONY: setup
+setup: ## Set up dependencies
+	@GOBIN=$(BIN_DIR) go install github.com/golangci/golangci-lint/cmd/golangci-lint
 
 .PHONY: build
 build: ## Build go binary
@@ -24,11 +29,11 @@ docker.run: ## Run on docker
 
 .PHONY: lint
 lint: ## Run static code analysis
-	@golangci-lint run $(PACKAGES)
+	@bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
 
 .PHONY: test
 test: ## Run code test
-	$(GO_TEST_CMD) $(PACKAGES)
+	@$(GO_TEST_CMD) $(PACKAGES)
 
 .PHONY: help
 help: ## Show options

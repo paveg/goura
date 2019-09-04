@@ -12,7 +12,7 @@ const (
 	patchVersion int = 0
 )
 
-func NewVersionCommand() *cobra.Command {
+func versionCommand() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "version",
 		Short: "Print the version number of goura",

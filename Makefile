@@ -11,9 +11,32 @@ PACKAGES := . $(shell $(PACKAGES_CMD))
 ARTIFACT := ./bin/$(APP_NAME)
 BIN_DIR := $(CURDIR)/bin
 
-.PHONY: setup
-setup: ## Set up dependencies
+.PHONY: tools.setup
+tools.setup: ## Set up tools
 	@GOBIN=$(BIN_DIR) go install github.com/golangci/golangci-lint/cmd/golangci-lint
+
+.PHONY: check
+check: vet lint ## Run static code check
+
+.PHONY: vet
+vet: ## Run vet
+	@go vet $(PACKAGES)
+
+.PHONY: lint
+lint: ## Run static lint for local
+	@echo $(PACKAGES) | xargs -n 1 golint
+
+.PHONY: docker.run
+docker.run: ## Run on docker
+	@docker run -it --rm $(APP_NAME):latest
+
+.PHONY: ci.lint
+ci.lint: tools.setup ## Run static lint for CI
+	@bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
+
+.PHONY: test
+test: ## Run code test
+	@$(GO_TEST_CMD) $(PACKAGES)
 
 .PHONY: build
 build: ## Build go binary
@@ -22,18 +45,6 @@ build: ## Build go binary
 .PHONY: docker.build
 docker.build: ## Build docker image
 	@docker build -f ./Dockerfile -t $(APP_NAME):latest .
-
-.PHONY: docker.run
-docker.run: ## Run on docker
-	@docker run -it --rm $(APP_NAME):latest
-
-.PHONY: lint
-lint: ## Run static code analysis
-	@bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
-
-.PHONY: test
-test: ## Run code test
-	@$(GO_TEST_CMD) $(PACKAGES)
 
 .PHONY: help
 help: ## Show options

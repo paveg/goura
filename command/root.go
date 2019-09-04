@@ -15,6 +15,7 @@ const (
 	failedExecution int = 1
 )
 
+// NewCommandRoot initializes a root command function.
 func NewCommandRoot() *cobra.Command {
 	command := &cobra.Command{
 		Use:   "goura",
@@ -25,7 +26,7 @@ func NewCommandRoot() *cobra.Command {
 
 	command.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.goura.yaml)")
 
-	command.AddCommand(NewVersionCommand())
+	command.AddCommand(versionCommand())
 	return command
 }
 
@@ -50,6 +51,7 @@ func initConfig() {
 	}
 }
 
+// Execute executes NewCommandRoot function.
 func Execute() {
 	command := NewCommandRoot()
 	command.SetOut(os.Stdout)

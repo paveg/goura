@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/paveg/goura/command"
+)
 
 func main() {
-	fmt.Printf("Hello %#v", "goura")
+	command.Execute()
 }

@@ -1,4 +1,4 @@
-package command
+package cmd
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ const (
 
 func versionCommand() *cobra.Command {
 	version = fmt.Sprintf("v%v.%v.%v", majorVersion, minorVersion, patchVersion)
-	command := &cobra.Command{
+	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print the version number of goura",
 		Run: func(cmd *cobra.Command, args []string) {
@@ -27,7 +27,7 @@ func versionCommand() *cobra.Command {
 		},
 	}
 
-	return command
+	return cmd
 }
 
 func init() {

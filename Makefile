@@ -1,6 +1,6 @@
 APP_NAME := goura
 REVISION := $(shell git rev-parse --short HEAD)
-LDFLAGS := "-X github.com/paveg/goura/command.revision=$(REVISION)"
+LDFLAGS := "-X github.com/paveg/goura/cmd.revision=$(REVISION)"
 .DEFAULT_GOAL := help
 
 GO_FILES_CMD := find . -name 'vendor' -prune -o -name '*.go' -print

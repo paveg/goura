@@ -14,6 +14,7 @@ BIN_DIR := $(CURDIR)/bin
 .PHONY: setup
 setup: ## Set up dependencies
 	@GOBIN=$(BIN_DIR) go install github.com/golangci/golangci-lint/cmd/golangci-lint
+	@GOBIN=$(BIN_DIR) go install github.com/kyoh86/richgo
 
 .PHONY: build
 build: ## Build go binary
@@ -33,7 +34,7 @@ lint: ## Run static code analysis
 
 .PHONY: test
 test: ## Run code test
-	@$(GO_TEST_CMD) $(PACKAGES)
+	@$(GO_TEST_CMD) $(PACKAGES) | bin/richgo testfilter
 
 .PHONY: help
 help: ## Show options

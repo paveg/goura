@@ -1,3 +1,4 @@
+export GO111MODULE=on
 APP_NAME := goura
 REVISION := $(shell git rev-parse --short HEAD)
 LDFLAGS := "-X github.com/paveg/goura/cmd.revision=$(REVISION)"

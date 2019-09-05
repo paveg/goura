@@ -60,19 +60,21 @@ func decodeBody(resp *http.Response, iFace interface{}) error {
 }
 
 // UserInfo requests GET /v1/userinfo
-func (client *Client) UserInfo(ctx context.Context) (*UserInfoResponse, error) {
-	subURL := fmt.Sprintln("/v1/userinfo")
+func (client *Client) UserInfo(ctx context.Context, token string) (*UserInfo, error) {
+	subURL := fmt.Sprint("/v1/userinfo")
 	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
 	if err != nil {
 		return nil, err
 	}
 	httpRequest.Header.Set("Content-Type", "application/json")
+	httpRequest.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	httpResponse, err := client.HTTPClient.Do(httpRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	var apiResponse UserInfoResponse
+	var apiResponse UserInfo
+	fmt.Printf("DEBUG: %+v\n", httpResponse.Status)
 	if err := decodeBody(httpResponse, &apiResponse); err != nil {
 		return nil, err
 	}

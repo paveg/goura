@@ -20,7 +20,7 @@ func userInfoCommand() *cobra.Command {
 				return err
 			}
 
-			resp, err := client.UserInfo(ctx)
+			resp, err := client.UserInfo(ctx, Config.AccessToken)
 			if err != nil {
 				return err
 			}

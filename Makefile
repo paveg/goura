@@ -48,6 +48,11 @@ build: ## Build go binary
 docker.build: ## Build docker image
 	@docker build -f ./Dockerfile -t $(APP_NAME):latest .
 
+.PHONY: install
+install: build ## Install go binary
+	@echo "export $(PWD)/bin/goura into $(HOME)/bin/goura"
+	@ln -sf $(PWD)/bin/goura $(HOME)/bin/goura
+
 .PHONY: help
 help: ## Show options
 	 @grep -E '^[a-zA-Z_-{\.}]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'

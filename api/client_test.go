@@ -13,20 +13,24 @@ import (
 func TestClient_UserInfo(t *testing.T) {
 	tests := []struct {
 		res  string
-		want *api.UserInfoResponse
+		want *api.UserInfo
 	}{
 		{
 			res: `{
   "age": 27,
-  "weight": 80,
+  "weight": 80.2,
+  "height": 180,
   "gender": "male",
-  "email": "john.doe@the.domain"
+  "email": "john.doe@the.domain",
+  "user_id": "abc"
 }`,
-			want: &api.UserInfoResponse{
+			want: &api.UserInfo{
 				Age:    27,
-				Weight: 80,
+				Weight: 80.2,
+				Height: 180.0,
 				Gender: "male",
 				Email:  "john.doe@the.domain",
+				UserID: "abc",
 			},
 		},
 	}
@@ -38,14 +42,14 @@ func TestClient_UserInfo(t *testing.T) {
 			_, _ = fmt.Fprintf(w, tt.res)
 		})
 
-		got, err := client.UserInfo(context.Background())
+		got, err := client.UserInfo(context.Background(), "")
 
 		if err != nil {
 			t.Fatalf("UserInfo was failed: got = %+v, err = %+v", got, err)
 		}
 
 		if !reflect.DeepEqual(got, tt.want) {
-			t.Errorf("got : %#v, want: %#v", got, tt.want)
+			t.Errorf("got : %+v, want: %+v", got, tt.want)
 		}
 	}
 }

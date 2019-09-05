@@ -39,6 +39,8 @@ ci.lint: tools.setup ## Run static lint for CI
 
 .PHONY: test
 test: ## Run code test
+	@echo $(GO_TEST_CMD)
+	@echo $(PACKAGES)
 	@$(GO_TEST_CMD) $(PACKAGES)
 
 .PHONY: build

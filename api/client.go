@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -74,7 +75,7 @@ func (client *Client) UserInfo(ctx context.Context, token string) (*UserInfo, er
 	}
 
 	var apiResponse UserInfo
-	fmt.Printf("DEBUG: %+v\n", httpResponse.Status)
+	log.Printf("HTTP Request: %v", httpResponse.Status)
 	if err := decodeBody(httpResponse, &apiResponse); err != nil {
 		return nil, err
 	}

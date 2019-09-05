@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -24,7 +26,10 @@ func userInfoCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			fmt.Printf("USERINFO: %#v\n", resp)
+			var buf bytes.Buffer
+			b, _ := json.Marshal(resp)
+			buf.Write(b)
+			fmt.Println(buf.String())
 
 			return nil
 		},

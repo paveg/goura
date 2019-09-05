@@ -19,7 +19,8 @@ type Client struct {
 	UserAgent   string
 }
 
-func newClient(endpointURL string, httpClient *http.Client, userAgent string) (*Client, error) {
+// NewClient creates a new http client
+func NewClient(endpointURL string, httpClient *http.Client, userAgent string) (*Client, error) {
 	parsedURL, err := url.ParseRequestURI(endpointURL)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to parse url: %s", endpointURL)
@@ -65,7 +66,7 @@ func (client *Client) UserInfo(ctx context.Context) (*UserInfoResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	httpRequest.Header.Set("Content-Type", "application/json")
 	httpResponse, err := client.HTTPClient.Do(httpRequest)
 	if err != nil {
 		return nil, err

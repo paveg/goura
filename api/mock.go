@@ -20,7 +20,7 @@ func NewTestClient(mockServerURL *url.URL) *Client {
 	endpointURL := mockServerURL.String() + "/api"
 	httpClient := &http.Client{}
 	userAgent := "test client"
-	client, _ := newClient(endpointURL, httpClient, userAgent)
+	client, _ := NewClient(endpointURL, httpClient, userAgent)
 
 	return client
 }

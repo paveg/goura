@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	version string
+	version  string
 	revision string
 )
 

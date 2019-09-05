@@ -9,11 +9,23 @@ import (
 	"github.com/spf13/viper"
 )
 
-var configFile string
+// Config declares config
+var Config config
+
+// Config represents config struct
+type config struct {
+	Debug        bool
+	RedirectURL  string
+	ClientID     string
+	ClientSecret string
+	AccessToken  string
+}
 
 const (
 	failedExecution int    = 1
-	configFileName  string = ".goura.yaml"
+	configName      string = ".goura"
+	configExt       string = "yml"
+	apiBaseURL      string = "https://api.ouraring.com"
 )
 
 // NewCommandRoot initializes a root command function.
@@ -27,30 +39,39 @@ func NewCommandRoot() *cobra.Command {
 	}
 	cobra.OnInitialize(initConfig)
 
-	command.PersistentFlags().StringVar(&configFile, "config", "", "config file (default is $HOME/.goura.yaml)")
+	versionCommand := versionCommand()
+	configCommand := configCommand()
+	userInfoCommand := userInfoCommand()
 
-	command.AddCommand(versionCommand())
+	command.AddCommand(versionCommand)
+	command.AddCommand(configCommand)
+	command.AddCommand(userInfoCommand)
 	return command
 }
 
 func initConfig() {
-	if configFile != "" {
-		viper.SetConfigFile(configFile)
-	} else {
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(failedExecution)
-		}
-
-		viper.AddConfigPath(home)
-		viper.SetConfigName(configFileName)
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(failedExecution)
 	}
 
+	viper.SetConfigName(configName)
+	viper.SetConfigType(configExt)
+	viper.AddConfigPath(home)
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Printf("Using config file: %#v", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println(err)
+		os.Exit(failedExecution)
+	}
+	viper.SetDefault("RedirectURL", "http://localhost:8989")
+	viper.SetDefault("ClientID", os.Getenv("OURA_CLIENT_ID"))
+	viper.SetDefault("ClientSecret", os.Getenv("OURA_CLIENT_SECRET"))
+
+	if err := viper.Unmarshal(&Config); err != nil {
+		fmt.Println(err)
+		os.Exit(failedExecution)
 	}
 }
 

@@ -22,6 +22,13 @@ $ make install
 
 First, go to [cloud.ouraring.com](https://cloud.ouraring.com/oauth/applications), create an application, and get a ClientID and ClientSecret.
 
+And set it in the environment variable.
+
+```bash
+export OURA_CLIENT_ID=your_client_id
+export OURA_CLIENT_SECRET=your_client_secret
+```
+
 RedirectURL should be http://localhost:8989 .
 
 ```bash

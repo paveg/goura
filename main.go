@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/paveg/goura/command"
+	"github.com/paveg/goura/cmd"
 )
 
 func main() {
-	command.Execute()
+	cmd.Execute()
 }

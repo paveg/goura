@@ -1,4 +1,7 @@
+export GO111MODULE=on
 APP_NAME := goura
+REVISION := $(shell git rev-parse --short HEAD)
+LDFLAGS := "-X github.com/paveg/goura/cmd.revision=$(REVISION)"
 .DEFAULT_GOAL := help
 
 GO_FILES_CMD := find . -name 'vendor' -prune -o -name '*.go' -print
@@ -40,11 +43,16 @@ test: ## Run code test
 
 .PHONY: build
 build: ## Build go binary
-	@go build -o $(ARTIFACT)
+	@go build -ldflags $(LDFLAGS) -o $(ARTIFACT)
 
 .PHONY: docker.build
 docker.build: ## Build docker image
 	@docker build -f ./Dockerfile -t $(APP_NAME):latest .
+
+.PHONY: install
+install: build ## Install go binary
+	@echo "export $(PWD)/bin/goura into $(HOME)/bin/goura"
+	@ln -sf $(PWD)/bin/goura $(HOME)/bin/goura
 
 .PHONY: help
 help: ## Show options

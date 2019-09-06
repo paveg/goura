@@ -1,9 +1,14 @@
-package command
+package cmd
 
 import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+)
+
+var (
+	version  string
+	revision string
 )
 
 const (
@@ -13,16 +18,16 @@ const (
 )
 
 func versionCommand() *cobra.Command {
-	command := &cobra.Command{
+	version = fmt.Sprintf("v%v.%v.%v", majorVersion, minorVersion, patchVersion)
+	cmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print the version number of goura",
-		Long:  `All software has versions. This is goura's`,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Printf("goura API client of oura cloud v%v.%v.%v", majorVersion, minorVersion, patchVersion)
+			fmt.Printf("goura version: %s, revision: %s\n", version, revision)
 		},
 	}
 
-	return command
+	return cmd
 }
 
 func init() {

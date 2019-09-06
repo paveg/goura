@@ -1,4 +1,4 @@
-package command_test
+package cmd_test
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/mattn/go-shellwords"
-	"github.com/paveg/goura/command"
+	"github.com/paveg/goura/cmd"
 )
 
 func TestExecute(t *testing.T) {
@@ -24,15 +24,15 @@ func TestExecute(t *testing.T) {
 
 	for _, tt := range tests {
 		buf := new(bytes.Buffer)
-		cmd := command.NewCommandRoot()
-		cmd.SetOut(buf)
+		rootCmd := cmd.NewCommandRoot()
+		rootCmd.SetOut(buf)
 		cmdArgs, err := shellwords.Parse(tt.command)
 		if err != nil {
 			t.Fatalf("args parse error: %+v\n", err)
 		}
 
-		cmd.SetArgs(cmdArgs[1:])
-		if err := cmd.Execute(); err != nil {
+		rootCmd.SetArgs(cmdArgs[1:])
+		if err := rootCmd.Execute(); err != nil {
 			got := err.Error()
 			if tt.want != got {
 				t.Errorf("unexpected error response - want: %+v, got: %+v\n", tt.want, got)

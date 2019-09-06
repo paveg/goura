@@ -24,7 +24,7 @@ type config struct {
 const (
 	failedExecution int    = 1
 	configName      string = ".goura"
-	configExt       string = "yml"
+	configExt       string = "yaml"
 	apiBaseURL      string = "https://api.ouraring.com"
 )
 
@@ -65,7 +65,8 @@ func initConfig() {
 
 	if err := viper.ReadInConfig(); err != nil {
 		fmt.Println(err)
-		os.Exit(failedExecution)
+		filePath := fmt.Sprintf("%s/%s.%s", home, configName, configExt)
+		createConfigFile(filePath)
 	}
 	viper.SetDefault("RedirectURL", "http://localhost:8989")
 	viper.SetDefault("ClientID", os.Getenv("OURA_CLIENT_ID"))
@@ -86,4 +87,14 @@ func Execute() {
 		command.Println(err)
 		os.Exit(failedExecution)
 	}
+}
+
+func createConfigFile(filePath string) {
+	fmt.Printf("create config file... (%s)\n", filePath)
+	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(failedExecution)
+	}
+	defer file.Close()
 }

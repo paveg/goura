@@ -60,6 +60,8 @@ func decodeBody(resp *http.Response, iFace interface{}) error {
 	return decoder.Decode(iFace)
 }
 
+// TODO: extract package or files.
+
 // UserInfo requests GET /v1/userinfo
 func (client *Client) UserInfo(ctx context.Context, token string) (*UserInfo, error) {
 	subURL := fmt.Sprint("/v1/userinfo")
@@ -75,6 +77,34 @@ func (client *Client) UserInfo(ctx context.Context, token string) (*UserInfo, er
 	}
 
 	var apiResponse UserInfo
+	log.Printf("HTTP Request: %v", httpResponse.Status)
+	if err := decodeBody(httpResponse, &apiResponse); err != nil {
+		return nil, err
+	}
+
+	return &apiResponse, nil
+}
+
+// Sleep requests GET /v1/sleep
+func (client *Client) Sleep(ctx context.Context, token string, dates DatePeriod) (*SleepPeriods, error) {
+	subURL := fmt.Sprintf("/v1/sleep")
+	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRequest.Header.Set("Content-Type", "application/json")
+	httpRequest.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+	q := httpRequest.URL.Query()
+	q.Add("start", dates.StartDate.String())
+	q.Add("end", dates.EndDate.String())
+	httpRequest.URL.RawQuery = q.Encode()
+	httpResponse, err := client.HTTPClient.Do(httpRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	var apiResponse SleepPeriods
 	log.Printf("HTTP Request: %v", httpResponse.Status)
 	if err := decodeBody(httpResponse, &apiResponse); err != nil {
 		return nil, err

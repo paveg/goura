@@ -42,10 +42,12 @@ func NewCommandRoot() *cobra.Command {
 	versionCommand := versionCommand()
 	configCommand := configCommand()
 	userInfoCommand := userInfoCommand()
+	sleepCommand := sleepCommand()
 
 	command.AddCommand(versionCommand)
 	command.AddCommand(configCommand)
 	command.AddCommand(userInfoCommand)
+	command.AddCommand(sleepCommand)
 	return command
 }
 

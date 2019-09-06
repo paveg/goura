@@ -10,7 +10,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-// FetchAccessToken fetchs access token
+// FetchAccessToken fetches access token
 func FetchAccessToken(clientID string, clientSecret string) (string, error) {
 	l, err := net.Listen("tcp", "localhost:8989")
 	if err != nil {

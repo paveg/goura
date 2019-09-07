@@ -1,7 +1,5 @@
 package api
 
-import "time"
-
 // Age represents user age
 type Age int
 
@@ -75,6 +73,6 @@ type Sleep struct {
 
 // DatePeriod struct for required date fields with api request.
 type DatePeriod struct {
-	StartDate time.Time
-	EndDate   time.Time
+	StartDate string
+	EndDate   string
 }

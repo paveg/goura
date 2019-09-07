@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -32,7 +33,7 @@ const (
 func NewCommandRoot() *cobra.Command {
 	command := &cobra.Command{
 		Use:           "goura",
-		Short:         "goura is a API client of Oura Cloud",
+		Short:         "goura is an API client of Oura Cloud",
 		Long:          "goura is a Unofficial API client of Oura Cloud written in Go.\nComplete documentation is available at https://github.com/paveg/goura",
 		SilenceErrors: true,
 		SilenceUsage:  true,
@@ -43,6 +44,12 @@ func NewCommandRoot() *cobra.Command {
 	configCommand := configCommand()
 	userInfoCommand := userInfoCommand()
 	sleepCommand := sleepCommand()
+
+	now := time.Now()
+	lastMonth := now.AddDate(0, -1, 0)
+	sleepCommand.Flags().StringVarP(&reqDate.target, "target", "t", "", "wanna get a specific day")
+	sleepCommand.Flags().StringVarP(&reqDate.end, "end", "e", now.Format(dateFormat), "required end date")
+	sleepCommand.Flags().StringVarP(&reqDate.start, "start", "s", lastMonth.Format(dateFormat), "required start date")
 
 	command.AddCommand(versionCommand)
 	command.AddCommand(configCommand)

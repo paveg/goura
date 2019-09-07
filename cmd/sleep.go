@@ -12,6 +12,16 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type requiredDate struct {
+	start  string
+	end    string
+	target string
+}
+
+var reqDate = &requiredDate{}
+
+const dateFormat = "2006-01-02"
+
 func sleepCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "sleeps",
@@ -22,17 +32,13 @@ func sleepCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			format := "2006-01-02"
-			start, err := time.Parse(format, "2019-08-01")
+			startDate, endDate, err := initDate()
 			if err != nil {
 				return err
 			}
-			end, err := time.Parse(format, "2019-09-01")
-			if err != nil {
-				return err
-			}
-			dp := api.DatePeriod{StartDate: start, EndDate: end}
-			resp, err := client.Sleep(ctx, Config.AccessToken, dp)
+
+			datePeriod := api.DatePeriod{StartDate: startDate, EndDate: endDate}
+			resp, err := client.Sleep(ctx, Config.AccessToken, datePeriod)
 			if err != nil {
 				return err
 			}
@@ -47,4 +53,22 @@ func sleepCommand() *cobra.Command {
 	}
 
 	return cmd
+}
+
+func initDate() (string, string, error) {
+	if reqDate.target != "" {
+		reqDate.start = reqDate.target
+		reqDate.end = reqDate.target
+	}
+
+	startDate, err := time.Parse(dateFormat, reqDate.start)
+	if err != nil {
+		return "", "", err
+	}
+	endDate, err := time.Parse(dateFormat, reqDate.end)
+	if err != nil {
+		return "", "", err
+	}
+
+	return startDate.Format(dateFormat), endDate.Format(dateFormat), err
 }

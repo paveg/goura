@@ -86,7 +86,7 @@ func (client *Client) UserInfo(ctx context.Context, token string) (*UserInfo, er
 }
 
 // Sleep requests GET /v1/sleep
-func (client *Client) Sleep(ctx context.Context, token string, dates DatePeriod) (*SleepPeriods, error) {
+func (client *Client) Sleep(ctx context.Context, token string, DatePeriod DatePeriod) (*SleepPeriods, error) {
 	subURL := fmt.Sprintf("/v1/sleep")
 	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
 	if err != nil {
@@ -96,8 +96,8 @@ func (client *Client) Sleep(ctx context.Context, token string, dates DatePeriod)
 	httpRequest.Header.Set("Content-Type", "application/json")
 	httpRequest.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	q := httpRequest.URL.Query()
-	q.Add("start", dates.StartDate.String())
-	q.Add("end", dates.EndDate.String())
+	q.Add("start", DatePeriod.StartDate)
+	q.Add("end", DatePeriod.EndDate)
 	httpRequest.URL.RawQuery = q.Encode()
 	httpResponse, err := client.HTTPClient.Do(httpRequest)
 	if err != nil {

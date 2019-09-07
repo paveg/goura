@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/paveg/goura/api"
@@ -31,11 +28,7 @@ func sleepCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
-
-			var buf bytes.Buffer
-			b, _ := json.Marshal(sleeps)
-			buf.Write(b)
-			fmt.Println(buf.String())
+			out(sleeps)
 
 			return nil
 		},

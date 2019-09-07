@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"os"
 	"time"
@@ -147,4 +149,11 @@ func initDate() (string, string, error) {
 	}
 
 	return startDate.Format(dateFormat), endDate.Format(dateFormat), err
+}
+
+func out(model interface{}) {
+	var buf bytes.Buffer
+	b, _ := json.Marshal(model)
+	buf.Write(b)
+	fmt.Println(buf.String())
 }

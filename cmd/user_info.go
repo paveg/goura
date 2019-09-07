@@ -1,10 +1,7 @@
 package cmd
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/paveg/goura/api"
@@ -22,14 +19,11 @@ func userInfoCommand() *cobra.Command {
 				return err
 			}
 
-			resp, err := client.UserInfo(ctx, Config.AccessToken)
+			userinfo, err := client.UserInfo(ctx, Config.AccessToken)
 			if err != nil {
 				return err
 			}
-			var buf bytes.Buffer
-			b, _ := json.Marshal(resp)
-			buf.Write(b)
-			fmt.Println(buf.String())
+			out(userinfo)
 
 			return nil
 		},

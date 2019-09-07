@@ -12,6 +12,14 @@ You can easily call the API from the command line to get the json string.
 
 ## Installation
 
+- preparing Go runtime
+
+```bash
+$ goenv install -s
+```
+
+- main installation process
+
 ```bash
 $ git clone https://github.com/paveg/goura
 $ cd path/to/goura

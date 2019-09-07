@@ -1,4 +1,3 @@
-export GO111MODULE=on
 APP_NAME := goura
 REVISION := $(shell git rev-parse --short HEAD)
 LDFLAGS := "-X github.com/paveg/goura/cmd.revision=$(REVISION)"
@@ -29,10 +28,6 @@ vet: ## Run vet
 lint: ## Run static lint for local
 	@echo $(PACKAGES) | xargs -n 1 golint
 
-.PHONY: docker.run
-docker.run: ## Run on docker
-	@docker run -it --rm $(APP_NAME):latest
-
 .PHONY: ci.lint
 ci.lint: tools.setup ## Run static lint for CI
 	@$(BIN_DIR)/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
@@ -45,12 +40,9 @@ test: ## Run code test
 build: ## Build go binary
 	@go build -ldflags $(LDFLAGS) -o $(ARTIFACT)
 
-.PHONY: docker.build
-docker.build: ## Build docker image
-	@docker build -f ./Dockerfile -t $(APP_NAME):latest .
-
 .PHONY: install
 install: build ## Install go binary
+	@mkdir -p $(HOME)/bin
 	@echo "export $(PWD)/bin/goura into $(HOME)/bin/goura"
 	@ln -sf $(PWD)/bin/goura $(HOME)/bin/goura
 

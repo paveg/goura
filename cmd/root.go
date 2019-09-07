@@ -59,15 +59,24 @@ func NewCommandRoot() *cobra.Command {
 
 	now := time.Now()
 	lastMonth := now.AddDate(0, -1, 0)
-	commands := []*cobra.Command{sleepCommand, activityCommand, readinessCommand}
-	for _, cmd := range commands {
+	for _, cmd := range []*cobra.Command{
+		sleepCommand,
+		activityCommand,
+		readinessCommand,
+	} {
 		cmd.Flags().StringVarP(&reqDate.target, "target", "t", "", "wanna get a specific day")
 		cmd.Flags().StringVarP(&reqDate.end, "end", "e", now.Format(dateFormat), "required end date")
 		cmd.Flags().StringVarP(&reqDate.start, "start", "s", lastMonth.Format(dateFormat), "required start date")
 	}
 
-	fullCommands := []*cobra.Command{versionCommand, configCommand, userInfoCommand, sleepCommand, activityCommand, readinessCommand}
-	for _, cmd := range fullCommands {
+	for _, cmd := range []*cobra.Command{
+		versionCommand,
+		configCommand,
+		userInfoCommand,
+		sleepCommand,
+		activityCommand,
+		readinessCommand,
+	} {
 		command.AddCommand(cmd)
 	}
 

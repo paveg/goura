@@ -13,8 +13,8 @@ import (
 
 func activityCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "activities",
-		Short: "Fetch activity",
+		Use:   "activity",
+		Short: "Fetch activities",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
 			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")

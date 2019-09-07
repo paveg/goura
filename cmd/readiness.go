@@ -14,7 +14,7 @@ import (
 func readinessCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "readiness",
-		Short: "Fetch readiness",
+		Short: "Fetch readinesses",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
 			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")

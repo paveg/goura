@@ -9,7 +9,7 @@ import (
 func configCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "configure",
-		Short: "set your token",
+		Short: "Fetch your access_token",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			token, err := api.FetchAccessToken(Config.ClientID, Config.ClientSecret)
 			if err != nil {

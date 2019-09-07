@@ -14,7 +14,7 @@ import (
 func userInfoCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "userinfo",
-		Short: "get user information",
+		Short: "Fetch user information",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
 			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")

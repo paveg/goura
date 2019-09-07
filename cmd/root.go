@@ -46,7 +46,7 @@ func NewCommandRoot() *cobra.Command {
 	command := &cobra.Command{
 		Use:           "goura",
 		Short:         "goura is an API client of Oura Cloud",
-		Long:          "goura is a Unofficial API client of Oura Cloud written in Go.\nComplete documentation is available at https://github.com/paveg/goura",
+		Long:          "goura is an Unofficial API client of Oura Cloud written in Go.\nComplete documentation is available at https://github.com/paveg/goura",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 	}

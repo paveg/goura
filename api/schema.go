@@ -114,10 +114,12 @@ type Activity struct {
 	// Met1min                []float64 `json:"met_1min"`
 }
 
+// Readinesses represents user readinesses
 type Readinesses struct {
 	Readiness []Readiness `json:"readiness"`
 }
 
+// Readiness represents user readiness
 type Readiness struct {
 	SummaryDate          string `json:"summary_date"`
 	PeriodID             int    `json:"period_id"`

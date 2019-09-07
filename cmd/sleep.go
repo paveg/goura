@@ -13,7 +13,7 @@ import (
 
 func sleepCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "sleeps",
+		Use:   "sleep",
 		Short: "Fetch sleep",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()

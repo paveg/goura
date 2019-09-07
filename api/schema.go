@@ -113,3 +113,22 @@ type Activity struct {
 	Class5min              string  `json:"class_5min"`
 	// Met1min                []float64 `json:"met_1min"`
 }
+
+// Readinesses represents user readinesses
+type Readinesses struct {
+	Readiness []Readiness `json:"readiness"`
+}
+
+// Readiness represents user readiness
+type Readiness struct {
+	SummaryDate          string `json:"summary_date"`
+	PeriodID             int    `json:"period_id"`
+	Score                int    `json:"score"`
+	ScorePreviousNight   int    `json:"score_previous_night"`
+	ScoreSleepBalance    int    `json:"score_sleep_balance"`
+	ScorePreviousDay     int    `json:"score_previous_day"`
+	ScoreActivityBalance int    `json:"score_activity_balance"`
+	ScoreRestingHr       int    `json:"score_resting_hr"`
+	ScoreRecoveryIndex   int    `json:"score_recovery_index"`
+	ScoreTemperature     int    `json:"score_temperature"`
+}

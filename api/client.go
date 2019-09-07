@@ -140,3 +140,31 @@ func (client *Client) Activity(ctx context.Context, token string, datePeriod Dat
 
 	return &apiResponse, nil
 }
+
+// Readiness requests GET /v1/readiness
+func (client *Client) Readiness(ctx context.Context, token string, datePeriod DatePeriod) (*Readinesses, error) {
+	subURL := fmt.Sprintf("/v1/readiness")
+	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	httpRequest.Header.Set("Content-Type", "application/json")
+	httpRequest.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+	q := httpRequest.URL.Query()
+	q.Add("start", datePeriod.StartDate)
+	q.Add("end", datePeriod.EndDate)
+	httpRequest.URL.RawQuery = q.Encode()
+	httpResponse, err := client.HTTPClient.Do(httpRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	var apiResponse Readinesses
+	log.Printf("HTTP Request: %v", httpResponse.Status)
+	if err := decodeBody(httpResponse, &apiResponse); err != nil {
+		return nil, err
+	}
+
+	return &apiResponse, nil
+}

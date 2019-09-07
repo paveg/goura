@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func activityCommand() *cobra.Command {
+func readinessCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "activity",
-		Short: "Fetch activities",
+		Use:   "readiness",
+		Short: "Fetch readinesses",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
 			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")
@@ -27,13 +27,13 @@ func activityCommand() *cobra.Command {
 			}
 
 			datePeriod := api.DatePeriod{StartDate: startDate, EndDate: endDate}
-			activities, err := client.Activity(ctx, Config.AccessToken, datePeriod)
+			readiness, err := client.Readiness(ctx, Config.AccessToken, datePeriod)
 			if err != nil {
 				return err
 			}
 
 			var buf bytes.Buffer
-			b, _ := json.Marshal(activities)
+			b, _ := json.Marshal(readiness)
 			buf.Write(b)
 			fmt.Println(buf.String())
 

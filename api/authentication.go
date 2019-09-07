@@ -59,7 +59,7 @@ func closer(l net.Listener) {
 }
 
 func serve(l net.Listener, err error, q chan string) {
-	if err := http.Serve(l, http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+	_ = http.Serve(l, http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		if req.URL.Path == "/" {
 			_, err = w.Write([]byte(`<script>location.href = "/close?" + location.hash.substring(1);</script>`))
 			if err != nil {
@@ -75,7 +75,5 @@ func serve(l net.Listener, err error, q chan string) {
 			w.(http.Flusher).Flush()
 			q <- req.URL.Query().Get("access_token")
 		}
-	})); err != nil {
-		fmt.Printf("ERROR: %#v\n", err)
-	}
+	}))
 }

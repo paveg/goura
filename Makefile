@@ -16,7 +16,7 @@ BIN_DIR := $(CURDIR)/bin
 
 .PHONY: tools.setup
 tools.setup: ## Set up tools
-	@GOBIN=$(BIN_DIR) go install github.com/golangci/golangci-lint/cmd/golangci-lint
+	@./init.sh
 
 .PHONY: check
 check: vet lint ## Run static code check
@@ -35,7 +35,7 @@ docker.run: ## Run on docker
 
 .PHONY: ci.lint
 ci.lint: tools.setup ## Run static lint for CI
-	@bin/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
+	@$(BIN_DIR)/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
 
 .PHONY: test
 test: ## Run code test

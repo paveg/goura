@@ -11,9 +11,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func sleepCommand() *cobra.Command {
+func activityCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "sleeps",
+		Use:   "activities",
 		Short: "fetch sleep",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
@@ -27,13 +27,13 @@ func sleepCommand() *cobra.Command {
 			}
 
 			datePeriod := api.DatePeriod{StartDate: startDate, EndDate: endDate}
-			sleeps, err := client.Sleep(ctx, Config.AccessToken, datePeriod)
+			activities, err := client.Activity(ctx, Config.AccessToken, datePeriod)
 			if err != nil {
 				return err
 			}
 
 			var buf bytes.Buffer
-			b, _ := json.Marshal(sleeps)
+			b, _ := json.Marshal(activities)
 			buf.Write(b)
 			fmt.Println(buf.String())
 

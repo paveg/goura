@@ -29,6 +29,16 @@ const (
 	apiBaseURL      string = "https://api.ouraring.com"
 )
 
+type requiredDate struct {
+	start  string
+	end    string
+	target string
+}
+
+var reqDate = &requiredDate{}
+
+const dateFormat = "2006-01-02"
+
 // NewCommandRoot initializes a root command function.
 func NewCommandRoot() *cobra.Command {
 	command := &cobra.Command{
@@ -44,17 +54,22 @@ func NewCommandRoot() *cobra.Command {
 	configCommand := configCommand()
 	userInfoCommand := userInfoCommand()
 	sleepCommand := sleepCommand()
+	activityCommand := activityCommand()
 
 	now := time.Now()
 	lastMonth := now.AddDate(0, -1, 0)
-	sleepCommand.Flags().StringVarP(&reqDate.target, "target", "t", "", "wanna get a specific day")
-	sleepCommand.Flags().StringVarP(&reqDate.end, "end", "e", now.Format(dateFormat), "required end date")
-	sleepCommand.Flags().StringVarP(&reqDate.start, "start", "s", lastMonth.Format(dateFormat), "required start date")
+	commands := []*cobra.Command{sleepCommand, activityCommand}
+	for _, cmd := range commands {
+		cmd.Flags().StringVarP(&reqDate.target, "target", "t", "", "wanna get a specific day")
+		cmd.Flags().StringVarP(&reqDate.end, "end", "e", now.Format(dateFormat), "required end date")
+		cmd.Flags().StringVarP(&reqDate.start, "start", "s", lastMonth.Format(dateFormat), "required start date")
+	}
 
 	command.AddCommand(versionCommand)
 	command.AddCommand(configCommand)
 	command.AddCommand(userInfoCommand)
 	command.AddCommand(sleepCommand)
+	command.AddCommand(activityCommand)
 	return command
 }
 
@@ -104,4 +119,22 @@ func createConfigFile(filePath string) {
 		os.Exit(failedExecution)
 	}
 	defer file.Close()
+}
+
+func initDate() (string, string, error) {
+	if reqDate.target != "" {
+		reqDate.start = reqDate.target
+		reqDate.end = reqDate.target
+	}
+
+	startDate, err := time.Parse(dateFormat, reqDate.start)
+	if err != nil {
+		return "", "", err
+	}
+	endDate, err := time.Parse(dateFormat, reqDate.end)
+	if err != nil {
+		return "", "", err
+	}
+
+	return startDate.Format(dateFormat), endDate.Format(dateFormat), err
 }

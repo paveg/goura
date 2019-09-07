@@ -1,5 +1,7 @@
 # goura
 
+![](https://github.com/paveg/goura/workflows/.github/workflows/test.yaml/badge.svg)
+
 goura is an API client of oura cloud and functionally command line tool. 
 
 ## Overview

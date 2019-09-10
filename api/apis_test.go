@@ -3,10 +3,11 @@ package api_test
 import (
 	"context"
 	"fmt"
-	"github.com/paveg/goura/api"
 	"net/http"
 	"reflect"
 	"testing"
+
+	"github.com/paveg/goura/api"
 )
 
 func TestClient_GetUserInfo(t *testing.T) {

@@ -161,7 +161,7 @@ func TestClient_GetSleep(t *testing.T) {
 	]
 }`,
 			want: &api.SleepPeriods{
-				Sleeps: []api.Sleep{
+				Sleep: []api.Sleep{
 					{
 						SummaryDate: "2015-01-01",
 						PeriodID:    1,

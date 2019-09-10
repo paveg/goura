@@ -59,6 +59,8 @@ func NewCommandRoot() *cobra.Command {
 	activityCommand := activityCommand()
 	readinessCommand := readinessCommand()
 
+	configCommand.Flags().StringVarP(&Config.RedirectURL, "redirectURL", "r", "http://localhost:8989", "redirect URL")
+
 	now := time.Now()
 	lastMonth := now.AddDate(0, -1, 0)
 	for _, cmd := range []*cobra.Command{
@@ -102,10 +104,9 @@ func initConfig() {
 		filePath := fmt.Sprintf("%s/%s.%s", home, configName, configExt)
 		createConfigFile(filePath)
 	}
-	viper.SetDefault("RedirectURL", "http://localhost:8989")
 	viper.SetDefault("ClientID", os.Getenv("OURA_CLIENT_ID"))
 	viper.SetDefault("ClientSecret", os.Getenv("OURA_CLIENT_SECRET"))
-
+	viper.SetDefault("RedirectURL", Config.RedirectURL)
 	if err := viper.Unmarshal(&Config); err != nil {
 		fmt.Println(err)
 		os.Exit(failedExecution)

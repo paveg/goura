@@ -18,7 +18,7 @@ type Email string
 // UserID represents user identifier
 type UserID string
 
-// UserInfo represents user information
+// GetUserInfo represents user information
 type UserInfo struct {
 	Age    Age    `json:"age"`
 	Weight Weight `json:"weight"`
@@ -33,7 +33,7 @@ type SleepPeriods struct {
 	SleepPeriods []Sleep `json:"sleep"`
 }
 
-// Sleep represents user sleep information
+// GetSleep represents user sleep information
 type Sleep struct {
 	SummaryDate       string  `json:"summary_date"`
 	PeriodID          int     `json:"period_id"`
@@ -80,7 +80,7 @@ type Activities struct {
 	Activity []Activity `json:"activity"`
 }
 
-// Activity represents user activity
+// GetActivity represents user activity
 type Activity struct {
 	SummaryDate            string  `json:"summary_date"`
 	DayStart               string  `json:"day_start"`
@@ -119,7 +119,7 @@ type Readinesses struct {
 	Readiness []Readiness `json:"readiness"`
 }
 
-// Readiness represents user readiness
+// GetReadiness represents user readiness
 type Readiness struct {
 	SummaryDate          string `json:"summary_date"`
 	PeriodID             int    `json:"period_id"`

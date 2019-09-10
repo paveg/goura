@@ -42,10 +42,10 @@ func TestClient_UserInfo(t *testing.T) {
 			_, _ = fmt.Fprintf(w, tt.res)
 		})
 
-		got, err := client.UserInfo(context.Background(), "")
+		got, err := client.GetUserInfo(context.Background())
 
 		if err != nil {
-			t.Fatalf("UserInfo was failed: got = %+v, err = %+v", got, err)
+			t.Fatalf("GetUserInfo was failed: got = %+v, err = %+v", got, err)
 		}
 
 		if !reflect.DeepEqual(got, tt.want) {

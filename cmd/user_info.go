@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/paveg/goura/api"
@@ -14,14 +15,14 @@ func userInfoCommand() *cobra.Command {
 		Short: "Fetch user information",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
-			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")
+			client, err := api.NewClient(apiBaseURL, &http.Client{}, "", Config.AccessToken)
 			if err != nil {
 				return err
 			}
 
-			userinfo, err := client.UserInfo(ctx, Config.AccessToken)
+			userinfo, err := client.GetUserInfo(ctx)
 			if err != nil {
-				return err
+				log.Fatalf("fail: %+v", err)
 			}
 			out(userinfo)
 

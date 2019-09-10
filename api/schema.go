@@ -30,7 +30,7 @@ type UserInfo struct {
 
 // SleepPeriods represents user sleep period information
 type SleepPeriods struct {
-	SleepPeriods []Sleep `json:"sleep"`
+	Sleeps []Sleep `json:"sleep"`
 }
 
 // Sleep represents user sleep information

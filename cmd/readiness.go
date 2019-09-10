@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/paveg/goura/api"
@@ -14,7 +15,7 @@ func readinessCommand() *cobra.Command {
 		Short: "Fetch readinesses",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
-			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")
+			client, err := api.NewClient(apiBaseURL, &http.Client{}, "", Config.AccessToken)
 			if err != nil {
 				return err
 			}
@@ -24,9 +25,9 @@ func readinessCommand() *cobra.Command {
 			}
 
 			datePeriod := api.DatePeriod{StartDate: startDate, EndDate: endDate}
-			readiness, err := client.Readiness(ctx, Config.AccessToken, datePeriod)
+			readiness, err := client.GetReadiness(ctx, datePeriod)
 			if err != nil {
-				return err
+				log.Fatalf("fail: %+v", err)
 			}
 			out(readiness)
 

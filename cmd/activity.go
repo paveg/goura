@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/paveg/goura/api"
@@ -14,7 +15,7 @@ func activityCommand() *cobra.Command {
 		Short: "Fetch activities",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
-			client, err := api.NewClient(apiBaseURL, &http.Client{}, "")
+			client, err := api.NewClient(apiBaseURL, &http.Client{}, "", Config.AccessToken)
 			if err != nil {
 				return err
 			}
@@ -24,9 +25,9 @@ func activityCommand() *cobra.Command {
 			}
 
 			datePeriod := api.DatePeriod{StartDate: startDate, EndDate: endDate}
-			activities, err := client.Activity(ctx, Config.AccessToken, datePeriod)
+			activities, err := client.GetActivity(ctx, datePeriod)
 			if err != nil {
-				return err
+				log.Fatalf("fail: %+v", err)
 			}
 			out(activities)
 

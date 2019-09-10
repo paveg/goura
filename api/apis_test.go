@@ -74,7 +74,7 @@ func TestClient_GetActivity(t *testing.T) {
 				Activity: []api.Activity{
 					{
 						SummaryDate: "2015-01-01",
-						AverageMet:    1.0,
+						AverageMet:  1.0,
 					},
 				},
 			},

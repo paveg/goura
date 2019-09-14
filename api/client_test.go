@@ -8,12 +8,13 @@ import (
 	"testing"
 
 	"github.com/paveg/goura/api"
+	"github.com/paveg/goura/oura"
 )
 
 func TestClient_UserInfo(t *testing.T) {
 	tests := []struct {
 		res  string
-		want *api.UserInfo
+		want *oura.UserInfo
 	}{
 		{
 			res: `{
@@ -24,7 +25,7 @@ func TestClient_UserInfo(t *testing.T) {
   "email": "john.doe@the.domain",
   "user_id": "abc"
 }`,
-			want: &api.UserInfo{
+			want: &oura.UserInfo{
 				Age:    27,
 				Weight: 80.2,
 				Height: 180.0,

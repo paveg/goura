@@ -1,4 +1,4 @@
-package api
+package oura
 
 // Age represents user age
 type Age int

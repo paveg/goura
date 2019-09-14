@@ -8,13 +8,14 @@ import (
 	"testing"
 
 	"github.com/paveg/goura/api"
+	"github.com/paveg/goura/oura"
 )
 
 func TestClient_GetUserInfo(t *testing.T) {
 	mux, client := initTest(t)
 	tests := []struct {
 		res  string
-		want *api.UserInfo
+		want *oura.UserInfo
 	}{
 		{
 			res: `{
@@ -25,7 +26,7 @@ func TestClient_GetUserInfo(t *testing.T) {
   "email": "john.doe@the.domain",
   "user_id": "abc"
 }`,
-			want: &api.UserInfo{
+			want: &oura.UserInfo{
 				Age:    27,
 				Weight: 80.2,
 				Height: 180.0,
@@ -56,12 +57,12 @@ func TestClient_GetUserInfo(t *testing.T) {
 func TestClient_GetActivity(t *testing.T) {
 	mux, client := initTest(t)
 	tests := []struct {
-		datePeriod api.DatePeriod
+		datePeriod oura.DatePeriod
 		res        string
-		want       *api.Activities
+		want       *oura.Activities
 	}{
 		{
-			datePeriod: api.DatePeriod{StartDate: "2015-01-01", EndDate: "2015-01-01"},
+			datePeriod: oura.DatePeriod{StartDate: "2015-01-01", EndDate: "2015-01-01"},
 			res: `{ "activity": 
 	[
 		{
@@ -70,8 +71,8 @@ func TestClient_GetActivity(t *testing.T) {
 		}
 	]
 }`,
-			want: &api.Activities{
-				Activity: []api.Activity{
+			want: &oura.Activities{
+				Activity: []oura.Activity{
 					{
 						SummaryDate: "2015-01-01",
 						AverageMet:  1.0,
@@ -101,12 +102,12 @@ func TestClient_GetActivity(t *testing.T) {
 func TestClient_GetReadiness(t *testing.T) {
 	mux, client := initTest(t)
 	tests := []struct {
-		datePeriod api.DatePeriod
+		datePeriod oura.DatePeriod
 		res        string
-		want       *api.Readinesses
+		want       *oura.Readinesses
 	}{
 		{
-			datePeriod: api.DatePeriod{StartDate: "2015-01-01", EndDate: "2015-01-01"},
+			datePeriod: oura.DatePeriod{StartDate: "2015-01-01", EndDate: "2015-01-01"},
 			res: `{ "readiness": 
 	[
 		{
@@ -115,8 +116,8 @@ func TestClient_GetReadiness(t *testing.T) {
 		}
 	]
 }`,
-			want: &api.Readinesses{
-				Readiness: []api.Readiness{
+			want: &oura.Readinesses{
+				Readiness: []oura.Readiness{
 					{
 						SummaryDate: "2015-01-01",
 						PeriodID:    1,
@@ -146,12 +147,12 @@ func TestClient_GetReadiness(t *testing.T) {
 func TestClient_GetSleep(t *testing.T) {
 	mux, client := initTest(t)
 	tests := []struct {
-		datePeriod api.DatePeriod
+		datePeriod oura.DatePeriod
 		res        string
-		want       *api.SleepPeriods
+		want       *oura.SleepPeriods
 	}{
 		{
-			datePeriod: api.DatePeriod{StartDate: "2015-01-01", EndDate: "2015-01-01"},
+			datePeriod: oura.DatePeriod{StartDate: "2015-01-01", EndDate: "2015-01-01"},
 			res: `{ "sleep": 
 	[
 		{
@@ -160,8 +161,8 @@ func TestClient_GetSleep(t *testing.T) {
 		}
 	]
 }`,
-			want: &api.SleepPeriods{
-				Sleep: []api.Sleep{
+			want: &oura.SleepPeriods{
+				Sleep: []oura.Sleep{
 					{
 						SummaryDate: "2015-01-01",
 						PeriodID:    1,

@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/paveg/goura/api"
+	"github.com/paveg/goura/oura"
 	"github.com/spf13/cobra"
 )
 
@@ -24,7 +25,7 @@ func sleepCommand() *cobra.Command {
 				return err
 			}
 
-			datePeriod := api.DatePeriod{StartDate: startDate, EndDate: endDate}
+			datePeriod := oura.DatePeriod{StartDate: startDate, EndDate: endDate}
 			sleeps, err := client.GetSleep(ctx, datePeriod)
 			if err != nil {
 				log.Fatalf("fail: %+v", err)

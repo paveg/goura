@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"path"
 
+	"github.com/paveg/goura/oura"
 	"github.com/pkg/errors"
 )
 
@@ -64,7 +65,7 @@ func decodeBody(resp *http.Response, iFace interface{}) error {
 	return decoder.Decode(iFace)
 }
 
-func (client *Client) getRequestWithDatePeriod(ctx context.Context, subURL string, datePeriod DatePeriod) (*http.Response, error) {
+func (client *Client) getRequestWithDatePeriod(ctx context.Context, subURL string, datePeriod oura.DatePeriod) (*http.Response, error) {
 	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
 	if err != nil {
 		return nil, err

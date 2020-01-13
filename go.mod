@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/mattn/go-shellwords v1.0.6
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/pkg/errors v0.8.1
+	github.com/pkg/errors v0.9.0
 	github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/viper v1.6.1

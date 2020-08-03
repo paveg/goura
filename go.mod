@@ -8,6 +8,6 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/skratchdot/open-golang v0.0.0-20190402232053-79abb63cd66e
 	github.com/spf13/cobra v0.0.7
-	github.com/spf13/viper v1.7.0
+	github.com/spf13/viper v1.7.1
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 )

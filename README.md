@@ -2,106 +2,267 @@
 
 ![](https://github.com/paveg/goura/workflows/static%20code%20test/badge.svg)
 
-goura is an API client of oura cloud and functionally command line tool. 
+goura is an unofficial Go client for the [Oura Ring API v2](https://cloud.ouraring.com/v2/docs) with a command-line interface.
 
 ## Overview
 
-[oura cloud api document](https://cloud.ouraring.com/docs/)
+goura provides both a Go library and CLI tool to access your Oura Ring health data through the official Oura API v2.
 
-goura is an API client and command line tool.
+### Supported Data Types
 
-You can easily call the API from the command line to get the json string.
+| Category | Endpoints |
+|----------|-----------|
+| **User** | Personal Info, Ring Configuration |
+| **Sleep** | Daily Sleep, Sleep Periods, Sleep Time Recommendations |
+| **Activity** | Daily Activity |
+| **Readiness** | Daily Readiness |
+| **Heart** | Heart Rate (time-series), SpO2 (blood oxygen) |
+| **Wellness** | Daily Stress, Daily Resilience, Cardiovascular Age, VO2 Max |
+| **Activities** | Workouts, Sessions (guided/unguided) |
+| **Tags** | Tags, Enhanced Tags, Rest Mode Periods |
+
+## Requirements
+
+- Go 1.21 or later
+- Oura Ring with active membership (Gen3/Ring 4 require membership for API access)
 
 ## Installation
 
-- preparing Go runtime
+### Using Go Install
 
 ```bash
-$ goenv install -s
+go install github.com/paveg/goura@latest
 ```
 
-- main installation process
+### From Source
 
 ```bash
-$ git clone https://github.com/paveg/goura
-$ cd path/to/goura
-$ make install
+git clone https://github.com/paveg/goura
+cd goura
+make install
 ```
 
-### Configuration
+## Configuration
 
-First, go to [cloud.ouraring.com](https://cloud.ouraring.com/oauth/applications), create an application, and get a ClientID and ClientSecret.
+### 1. Create an Oura Application
 
-And set it in the environment variable.
+Go to [cloud.ouraring.com/oauth/applications](https://cloud.ouraring.com/oauth/applications) and create a new application.
+
+- Set **Redirect URL** to `http://localhost:8989`
+
+### 2. Set Environment Variables
 
 ```bash
 export OURA_CLIENT_ID=your_client_id
 export OURA_CLIENT_SECRET=your_client_secret
 ```
 
-RedirectURL should be http://localhost:8989 .
+Alternatively, you can use a Personal Access Token directly:
 
 ```bash
-$ goura configure
-# apply oura cloud
+export OURA_ACCESS_TOKEN=your_personal_access_token
+```
+
+> **Note**: Personal Access Tokens will be deprecated by end of 2025. OAuth2 is recommended.
+
+### 3. Authenticate
+
+```bash
+goura configure
+```
+
+This opens your browser for OAuth2 authorization and stores the token in `~/.goura.yaml`.
+
+## Usage
+
+### Available Commands
+
+```
+goura [command]
+
+Commands:
+  userinfo      Fetch user personal information
+  ring          Fetch ring configuration
+  sleep         Fetch daily sleep scores
+  sleep-periods Fetch detailed sleep period data
+  sleep-time    Fetch sleep time recommendations
+  activity      Fetch daily activity data
+  readiness     Fetch daily readiness scores
+  heartrate     Fetch heart rate data
+  spo2          Fetch daily SpO2 (blood oxygen) data
+  stress        Fetch daily stress data
+  resilience    Fetch daily resilience data
+  workout       Fetch workout data
+  session       Fetch session data
+  configure     Authenticate with Oura API
+  version       Print version information
+```
+
+### Common Flags
+
+Most data commands support these flags:
+
+```
+-s, --start string   Start date (YYYY-MM-DD), default: 1 month ago
+-e, --end string     End date (YYYY-MM-DD), default: today
+-t, --target string  Fetch data for a specific day (YYYY-MM-DD)
+```
+
+The `heartrate` command uses datetime flags:
+
+```
+--start-datetime string  Start datetime (ISO 8601)
+--end-datetime string    End datetime (ISO 8601)
 ```
 
 ## Examples
 
+### Get User Information
+
 ```bash
-$ goura userinfo | jq .
-2019/09/07 08:17:57 HTTP Request: 200 OK
+$ goura userinfo
 {
-  "age": 27,
-  "weight": 58.1,
-  "height": 176,
-  "gender": "male",
-  "email": "example@gmail.com",
-  "user_id": "ABCDEF12345"
+  "id": "abc123",
+  "age": 30,
+  "weight": 70.5,
+  "height": 175,
+  "biological_sex": "male",
+  "email": "user@example.com"
 }
 ```
 
+### Get Daily Sleep Data
+
 ```bash
-$ goura sleeps --target 2019-03-01 | jq .
-2019/09/07 10:14:01 HTTP Request: 200 OK
+$ goura sleep -t 2024-01-15
 {
-  "sleep": [
+  "data": [
     {
-      "summary_date": "2019-03-01",
-      "period_id": 0,
-      "is_longest": 1,
-      "time_zone": 0,
-      "bedtime_start": "2019-03-02T00:57:59+09:00",
-      "bedtime_end": "2019-03-02T07:46:59+09:00",
-      "score": 53,
-      "score_total": 43,
-      "score_disturbances": 55,
-      "score_efficiency": 53,
-      "score_latency": 81,
-      "score_rem": 43,
-      "score_deep": 49,
-      "score_alignment": 68,
-      "total": 17670,
-      "duration": 24540,
-      "awake": 6870,
-      "light": 11550,
-      "rem": 3180,
-      "deep": 2940,
-      "onset_latency": 180,
-      "restless": 42,
-      "efficiency": 72,
-      "midpoint_time": 11160,
-      "hr_lowest": 51,
-      "hr_average": 60.625,
-      "rmssd": 50,
-      "breath_average": 14.75,
-      "temperature_delta": 0.05,
-      "hypnogram_5min": "4222444444222222122111221123344333322222222212221234222222144332334222244244444444"
+      "id": "sleep-123",
+      "day": "2024-01-15",
+      "score": 85,
+      "timestamp": "2024-01-15T07:30:00+00:00",
+      "contributors": {
+        "deep_sleep": 80,
+        "efficiency": 90,
+        "latency": 85,
+        "rem_sleep": 75,
+        "restfulness": 88,
+        "timing": 92,
+        "total_sleep": 82
+      }
     }
-  ]
+  ],
+  "next_token": null
 }
 ```
 
-This example using the jq which is a lightweight and flexible command-line JSON processor.
+### Get Heart Rate Data
 
-jq is [here](https://stedolan.github.io/jq/) .
+```bash
+$ goura heartrate --start-datetime 2024-01-15T00:00:00Z --end-datetime 2024-01-15T23:59:59Z
+{
+  "data": [
+    {
+      "bpm": 65,
+      "source": "rest",
+      "timestamp": "2024-01-15T03:00:00+00:00"
+    },
+    {
+      "bpm": 72,
+      "source": "awake",
+      "timestamp": "2024-01-15T10:30:00+00:00"
+    }
+  ],
+  "next_token": null
+}
+```
+
+### Get Workout Data
+
+```bash
+$ goura workout -s 2024-01-01 -e 2024-01-31
+{
+  "data": [
+    {
+      "id": "workout-123",
+      "activity": "running",
+      "calories": 350.5,
+      "day": "2024-01-15",
+      "distance": 5000,
+      "intensity": "moderate",
+      "source": "manual",
+      "start_datetime": "2024-01-15T07:00:00+00:00",
+      "end_datetime": "2024-01-15T07:45:00+00:00"
+    }
+  ],
+  "next_token": null
+}
+```
+
+### Using with jq
+
+For formatted output, pipe to [jq](https://stedolan.github.io/jq/):
+
+```bash
+$ goura sleep -t 2024-01-15 | jq '.data[0].score'
+85
+```
+
+## Library Usage
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "net/http"
+
+    "github.com/paveg/goura/api"
+    "github.com/paveg/goura/oura"
+)
+
+func main() {
+    client, _ := api.NewClient(
+        "https://api.ouraring.com",
+        &http.Client{},
+        "myapp/1.0",
+        "your_access_token",
+    )
+
+    ctx := context.Background()
+
+    // Get personal info
+    info, _ := client.GetPersonalInfo(ctx)
+    fmt.Printf("Email: %s\n", info.Email)
+
+    // Get daily sleep data
+    period := oura.DatePeriod{
+        StartDate: "2024-01-01",
+        EndDate:   "2024-01-31",
+    }
+    sleep, _ := client.GetDailySleep(ctx, period)
+    for _, s := range sleep.Data {
+        fmt.Printf("Day: %s, Score: %d\n", s.Day, *s.Score)
+    }
+
+    // Get heart rate data
+    hrPeriod := oura.DateTimePeriod{
+        StartDateTime: "2024-01-15T00:00:00Z",
+        EndDateTime:   "2024-01-15T23:59:59Z",
+    }
+    hr, _ := client.GetHeartRate(ctx, hrPeriod)
+    for _, h := range hr.Data {
+        fmt.Printf("BPM: %d at %s\n", h.BPM, h.Timestamp)
+    }
+}
+```
+
+## API Reference
+
+See the [Oura API v2 Documentation](https://cloud.ouraring.com/v2/docs) for detailed information about available data and response formats.
+
+## License
+
+MIT

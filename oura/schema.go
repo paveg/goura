@@ -68,47 +68,47 @@ type SampleData struct {
 
 // Sleep represents detailed sleep period data from v2 API.
 type Sleep struct {
-	ID                    string      `json:"id"`
-	AverageBreath         *float64    `json:"average_breath,omitempty"`
-	AverageHeartRate      *float64    `json:"average_heart_rate,omitempty"`
-	AverageHRV            *int        `json:"average_hrv,omitempty"`
-	AwakeTime             *int        `json:"awake_time,omitempty"`
-	BedtimeEnd            string      `json:"bedtime_end,omitempty"`
-	BedtimeStart          string      `json:"bedtime_start,omitempty"`
-	Day                   string      `json:"day"`
-	DeepSleepDuration     *int        `json:"deep_sleep_duration,omitempty"`
-	Efficiency            *int        `json:"efficiency,omitempty"`
-	HeartRate             *SampleData `json:"heart_rate,omitempty"`
-	HRV                   *SampleData `json:"hrv,omitempty"`
-	Latency               *int        `json:"latency,omitempty"`
-	LightSleepDuration    *int        `json:"light_sleep_duration,omitempty"`
-	LowBatteryAlert       bool        `json:"low_battery_alert,omitempty"`
-	LowestHeartRate       *int        `json:"lowest_heart_rate,omitempty"`
-	Movement30Sec         *string     `json:"movement_30_sec,omitempty"`
-	Period                *int        `json:"period,omitempty"`
-	ReadinessScoreDelta   *int        `json:"readiness_score_delta,omitempty"`
-	REMSleepDuration      *int        `json:"rem_sleep_duration,omitempty"`
-	RestlessPeriods       *int        `json:"restless_periods,omitempty"`
-	SleepPhase5Min        *string     `json:"sleep_phase_5_min,omitempty"`
-	SleepScoreDelta       *int        `json:"sleep_score_delta,omitempty"`
-	TimeInBed             *int        `json:"time_in_bed,omitempty"`
-	TotalSleepDuration    *int        `json:"total_sleep_duration,omitempty"`
-	Type                  string      `json:"type,omitempty"`
+	ID                  string      `json:"id"`
+	AverageBreath       *float64    `json:"average_breath,omitempty"`
+	AverageHeartRate    *float64    `json:"average_heart_rate,omitempty"`
+	AverageHRV          *int        `json:"average_hrv,omitempty"`
+	AwakeTime           *int        `json:"awake_time,omitempty"`
+	BedtimeEnd          string      `json:"bedtime_end,omitempty"`
+	BedtimeStart        string      `json:"bedtime_start,omitempty"`
+	Day                 string      `json:"day"`
+	DeepSleepDuration   *int        `json:"deep_sleep_duration,omitempty"`
+	Efficiency          *int        `json:"efficiency,omitempty"`
+	HeartRate           *SampleData `json:"heart_rate,omitempty"`
+	HRV                 *SampleData `json:"hrv,omitempty"`
+	Latency             *int        `json:"latency,omitempty"`
+	LightSleepDuration  *int        `json:"light_sleep_duration,omitempty"`
+	LowBatteryAlert     bool        `json:"low_battery_alert,omitempty"`
+	LowestHeartRate     *int        `json:"lowest_heart_rate,omitempty"`
+	Movement30Sec       *string     `json:"movement_30_sec,omitempty"`
+	Period              *int        `json:"period,omitempty"`
+	ReadinessScoreDelta *int        `json:"readiness_score_delta,omitempty"`
+	REMSleepDuration    *int        `json:"rem_sleep_duration,omitempty"`
+	RestlessPeriods     *int        `json:"restless_periods,omitempty"`
+	SleepPhase5Min      *string     `json:"sleep_phase_5_min,omitempty"`
+	SleepScoreDelta     *int        `json:"sleep_score_delta,omitempty"`
+	TimeInBed           *int        `json:"time_in_bed,omitempty"`
+	TotalSleepDuration  *int        `json:"total_sleep_duration,omitempty"`
+	Type                string      `json:"type,omitempty"`
 }
 
 // SleepTime represents sleep time recommendations.
 type SleepTime struct {
-	ID                string  `json:"id"`
-	Day               string  `json:"day"`
-	OptimalBedtime    *Window `json:"optimal_bedtime,omitempty"`
-	Recommendation    string  `json:"recommendation,omitempty"`
-	Status            string  `json:"status,omitempty"`
+	ID             string  `json:"id"`
+	Day            string  `json:"day"`
+	OptimalBedtime *Window `json:"optimal_bedtime,omitempty"`
+	Recommendation string  `json:"recommendation,omitempty"`
+	Status         string  `json:"status,omitempty"`
 }
 
 // Window represents a time window.
 type Window struct {
-	DayTz    int    `json:"day_tz,omitempty"`
-	EndOffset int   `json:"end_offset,omitempty"`
+	DayTz       int `json:"day_tz,omitempty"`
+	EndOffset   int `json:"end_offset,omitempty"`
 	StartOffset int `json:"start_offset,omitempty"`
 }
 
@@ -124,31 +124,31 @@ type DailyActivityContributors struct {
 
 // DailyActivity represents daily activity data from v2 API.
 type DailyActivity struct {
-	ID                      string                     `json:"id"`
-	Day                     string                     `json:"day"`
-	Score                   *int                       `json:"score,omitempty"`
-	ActiveCalories          int                        `json:"active_calories,omitempty"`
-	AverageMETMinutes       float64                    `json:"average_met_minutes,omitempty"`
-	Contributors            *DailyActivityContributors `json:"contributors,omitempty"`
-	EquivalentWalkingDistance int                      `json:"equivalent_walking_distance,omitempty"`
-	HighActivityMETMinutes  int                        `json:"high_activity_met_minutes,omitempty"`
-	HighActivityTime        int                        `json:"high_activity_time,omitempty"`
-	InactivityAlerts        int                        `json:"inactivity_alerts,omitempty"`
-	LowActivityMETMinutes   int                        `json:"low_activity_met_minutes,omitempty"`
-	LowActivityTime         int                        `json:"low_activity_time,omitempty"`
-	MediumActivityMETMinutes int                       `json:"medium_activity_met_minutes,omitempty"`
-	MediumActivityTime      int                        `json:"medium_activity_time,omitempty"`
-	Met                     *SampleData                `json:"met,omitempty"`
-	MetersToTarget          int                        `json:"meters_to_target,omitempty"`
-	NonWearTime             int                        `json:"non_wear_time,omitempty"`
-	RestingTime             int                        `json:"resting_time,omitempty"`
-	SedentaryMETMinutes     int                        `json:"sedentary_met_minutes,omitempty"`
-	SedentaryTime           int                        `json:"sedentary_time,omitempty"`
-	Steps                   int                        `json:"steps,omitempty"`
-	TargetCalories          int                        `json:"target_calories,omitempty"`
-	TargetMeters            int                        `json:"target_meters,omitempty"`
-	Timestamp               string                     `json:"timestamp,omitempty"`
-	TotalCalories           int                        `json:"total_calories,omitempty"`
+	ID                        string                     `json:"id"`
+	Day                       string                     `json:"day"`
+	Score                     *int                       `json:"score,omitempty"`
+	ActiveCalories            int                        `json:"active_calories,omitempty"`
+	AverageMETMinutes         float64                    `json:"average_met_minutes,omitempty"`
+	Contributors              *DailyActivityContributors `json:"contributors,omitempty"`
+	EquivalentWalkingDistance int                        `json:"equivalent_walking_distance,omitempty"`
+	HighActivityMETMinutes    int                        `json:"high_activity_met_minutes,omitempty"`
+	HighActivityTime          int                        `json:"high_activity_time,omitempty"`
+	InactivityAlerts          int                        `json:"inactivity_alerts,omitempty"`
+	LowActivityMETMinutes     int                        `json:"low_activity_met_minutes,omitempty"`
+	LowActivityTime           int                        `json:"low_activity_time,omitempty"`
+	MediumActivityMETMinutes  int                        `json:"medium_activity_met_minutes,omitempty"`
+	MediumActivityTime        int                        `json:"medium_activity_time,omitempty"`
+	Met                       *SampleData                `json:"met,omitempty"`
+	MetersToTarget            int                        `json:"meters_to_target,omitempty"`
+	NonWearTime               int                        `json:"non_wear_time,omitempty"`
+	RestingTime               int                        `json:"resting_time,omitempty"`
+	SedentaryMETMinutes       int                        `json:"sedentary_met_minutes,omitempty"`
+	SedentaryTime             int                        `json:"sedentary_time,omitempty"`
+	Steps                     int                        `json:"steps,omitempty"`
+	TargetCalories            int                        `json:"target_calories,omitempty"`
+	TargetMeters              int                        `json:"target_meters,omitempty"`
+	Timestamp                 string                     `json:"timestamp,omitempty"`
+	TotalCalories             int                        `json:"total_calories,omitempty"`
 }
 
 // DailyReadinessContributors represents the contributor scores for daily readiness.
@@ -183,10 +183,10 @@ type HeartRate struct {
 
 // DailySpo2 represents daily SpO2 (blood oxygen) data from v2 API.
 type DailySpo2 struct {
-	ID                string           `json:"id"`
-	Day               string           `json:"day"`
-	SpO2Percentage    *Spo2Percentage  `json:"spo2_percentage,omitempty"`
-	BreathingDisturbanceIndex *float64 `json:"breathing_disturbance_index,omitempty"`
+	ID                        string          `json:"id"`
+	Day                       string          `json:"day"`
+	SpO2Percentage            *Spo2Percentage `json:"spo2_percentage,omitempty"`
+	BreathingDisturbanceIndex *float64        `json:"breathing_disturbance_index,omitempty"`
 }
 
 // Spo2Percentage represents SpO2 percentage range.
@@ -196,11 +196,11 @@ type Spo2Percentage struct {
 
 // DailyStress represents daily stress data from v2 API.
 type DailyStress struct {
-	ID               string `json:"id"`
-	Day              string `json:"day"`
-	StressHigh       *int   `json:"stress_high,omitempty"`
-	RecoveryHigh     *int   `json:"recovery_high,omitempty"`
-	DaySummary       string `json:"day_summary,omitempty"`
+	ID           string `json:"id"`
+	Day          string `json:"day"`
+	StressHigh   *int   `json:"stress_high,omitempty"`
+	RecoveryHigh *int   `json:"recovery_high,omitempty"`
+	DaySummary   string `json:"day_summary,omitempty"`
 }
 
 // DailyResilience represents daily resilience data from v2 API.
@@ -213,16 +213,16 @@ type DailyResilience struct {
 
 // DailyResilienceContributors represents resilience contributors.
 type DailyResilienceContributors struct {
-	SleepRecovery    float64 `json:"sleep_recovery,omitempty"`
-	DaytimeRecovery  float64 `json:"daytime_recovery,omitempty"`
-	Stress           float64 `json:"stress,omitempty"`
+	SleepRecovery   float64 `json:"sleep_recovery,omitempty"`
+	DaytimeRecovery float64 `json:"daytime_recovery,omitempty"`
+	Stress          float64 `json:"stress,omitempty"`
 }
 
 // DailyCardiovascularAge represents daily cardiovascular age data.
 type DailyCardiovascularAge struct {
-	ID     string `json:"id"`
-	Day    string `json:"day"`
-	VascularAge *int `json:"vascular_age,omitempty"`
+	ID          string `json:"id"`
+	Day         string `json:"day"`
+	VascularAge *int   `json:"vascular_age,omitempty"`
 }
 
 // Vo2Max represents VO2 max data from v2 API.
@@ -249,15 +249,15 @@ type Workout struct {
 
 // Session represents guided/unguided session data from v2 API.
 type Session struct {
-	ID                 string      `json:"id"`
-	Day                string      `json:"day"`
-	StartDatetime      string      `json:"start_datetime,omitempty"`
-	EndDatetime        string      `json:"end_datetime,omitempty"`
-	Type               string      `json:"type,omitempty"`
-	HeartRate          *SampleData `json:"heart_rate,omitempty"`
-	HRV                *SampleData `json:"hrv,omitempty"`
-	Mood               *string     `json:"mood,omitempty"`
-	MotionCount        *SampleData `json:"motion_count,omitempty"`
+	ID            string      `json:"id"`
+	Day           string      `json:"day"`
+	StartDatetime string      `json:"start_datetime,omitempty"`
+	EndDatetime   string      `json:"end_datetime,omitempty"`
+	Type          string      `json:"type,omitempty"`
+	HeartRate     *SampleData `json:"heart_rate,omitempty"`
+	HRV           *SampleData `json:"hrv,omitempty"`
+	Mood          *string     `json:"mood,omitempty"`
+	MotionCount   *SampleData `json:"motion_count,omitempty"`
 }
 
 // Tag represents user-entered tag data (deprecated, use EnhancedTag).
@@ -271,24 +271,24 @@ type Tag struct {
 
 // EnhancedTag represents enhanced tag data from v2 API.
 type EnhancedTag struct {
-	ID             string  `json:"id"`
-	Day            string  `json:"day"`
-	TagTypeCode    *string `json:"tag_type_code,omitempty"`
-	StartTime      *string `json:"start_time,omitempty"`
-	EndTime        *string `json:"end_time,omitempty"`
-	StartDay       *string `json:"start_day,omitempty"`
-	EndDay         *string `json:"end_day,omitempty"`
-	Comment        *string `json:"comment,omitempty"`
+	ID          string  `json:"id"`
+	Day         string  `json:"day"`
+	TagTypeCode *string `json:"tag_type_code,omitempty"`
+	StartTime   *string `json:"start_time,omitempty"`
+	EndTime     *string `json:"end_time,omitempty"`
+	StartDay    *string `json:"start_day,omitempty"`
+	EndDay      *string `json:"end_day,omitempty"`
+	Comment     *string `json:"comment,omitempty"`
 }
 
 // RestModePeriod represents rest mode period data from v2 API.
 type RestModePeriod struct {
-	ID            string    `json:"id"`
-	EndDay        *string   `json:"end_day,omitempty"`
-	EndTime       *string   `json:"end_time,omitempty"`
-	Episodes      []Episode `json:"episodes,omitempty"`
-	StartDay      string    `json:"start_day,omitempty"`
-	StartTime     *string   `json:"start_time,omitempty"`
+	ID        string    `json:"id"`
+	EndDay    *string   `json:"end_day,omitempty"`
+	EndTime   *string   `json:"end_time,omitempty"`
+	Episodes  []Episode `json:"episodes,omitempty"`
+	StartDay  string    `json:"start_day,omitempty"`
+	StartTime *string   `json:"start_time,omitempty"`
 }
 
 // Episode represents a rest mode episode.
@@ -301,17 +301,17 @@ type Episode struct {
 
 // WebhookSubscription represents a webhook subscription.
 type WebhookSubscription struct {
-	ID            string `json:"id"`
-	CallbackURL   string `json:"callback_url"`
-	EventType     string `json:"event_type"`
-	DataType      string `json:"data_type"`
+	ID             string `json:"id"`
+	CallbackURL    string `json:"callback_url"`
+	EventType      string `json:"event_type"`
+	DataType       string `json:"data_type"`
 	ExpirationTime string `json:"expiration_time,omitempty"`
 }
 
 // WebhookSubscriptionRequest represents a request to create/update a webhook subscription.
 type WebhookSubscriptionRequest struct {
-	CallbackURL     string `json:"callback_url"`
+	CallbackURL       string `json:"callback_url"`
 	VerificationToken string `json:"verification_token"`
-	EventType       string `json:"event_type"`
-	DataType        string `json:"data_type"`
+	EventType         string `json:"event_type"`
+	DataType          string `json:"data_type"`
 }

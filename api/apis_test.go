@@ -80,12 +80,12 @@ func TestClient_GetDailyActivity(t *testing.T) {
 			want: &oura.PaginatedResponse[oura.DailyActivity]{
 				Data: []oura.DailyActivity{
 					{
-						ID:            "activity-123",
-						Day:           "2024-01-01",
-						Score:         &score,
-						Steps:         10000,
+						ID:             "activity-123",
+						Day:            "2024-01-01",
+						Score:          &score,
+						Steps:          10000,
 						ActiveCalories: 500,
-						TotalCalories: 2000,
+						TotalCalories:  2000,
 					},
 				},
 				NextToken: nil,

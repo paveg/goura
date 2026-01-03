@@ -40,7 +40,7 @@ func TestClient_PersonalInfo(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetPersonalInfo(context.Background())

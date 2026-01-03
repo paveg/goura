@@ -13,10 +13,6 @@ PACKAGES := . $(shell $(PACKAGES_CMD))
 ARTIFACT := ./bin/$(APP_NAME)
 BIN_DIR := $(CURDIR)/bin
 
-.PHONY: tools.setup
-tools.setup: ## Set up tools
-	@./init.sh
-
 .PHONY: check
 check: vet lint ## Run static code check
 
@@ -25,12 +21,8 @@ vet: ## Run vet
 	@go vet $(PACKAGES)
 
 .PHONY: lint
-lint: ## Run static lint for local
-	@echo $(PACKAGES) | xargs -n 1 golint
-
-.PHONY: ci.lint
-ci.lint: tools.setup ## Run static lint for CI
-	@$(BIN_DIR)/golangci-lint run --tests --disable-all --enable=goimports --enable=golint --enable=govet --enable=errcheck --enable=staticcheck --enable=gosec $(PACKAGES)
+lint: ## Run golangci-lint
+	@golangci-lint run $(PACKAGES)
 
 .PHONY: test
 test: ## Run code test

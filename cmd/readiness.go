@@ -13,10 +13,11 @@ import (
 func readinessCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "readiness",
-		Short: "Fetch readinesses",
+		Short: "Fetch daily readiness scores",
+		Long:  "Fetch daily readiness scores with contributor breakdown from the Oura API v2.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
-			client, err := api.NewClient(apiBaseURL, &http.Client{}, "", Config.AccessToken)
+			client, err := api.NewClient(apiBaseURL, &http.Client{}, userAgent, Config.AccessToken)
 			if err != nil {
 				return err
 			}
@@ -26,7 +27,7 @@ func readinessCommand() *cobra.Command {
 			}
 
 			datePeriod := oura.DatePeriod{StartDate: startDate, EndDate: endDate}
-			readiness, err := client.GetReadiness(ctx, datePeriod)
+			readiness, err := client.GetDailyReadiness(ctx, datePeriod)
 			if err != nil {
 				log.Fatalf("fail: %+v", err)
 			}

@@ -22,6 +22,7 @@ type config struct {
 	ClientID     string
 	ClientSecret string
 	AccessToken  string
+	RefreshToken string
 }
 
 const (
@@ -29,6 +30,7 @@ const (
 	configName      string = ".goura"
 	configExt       string = "yaml"
 	apiBaseURL      string = "https://api.ouraring.com"
+	userAgent       string = "goura/2.0.0"
 )
 
 type requiredDate struct {
@@ -45,42 +47,78 @@ const dateFormat = "2006-01-02"
 func NewCommandRoot() *cobra.Command {
 	command := &cobra.Command{
 		Use:           "goura",
-		Short:         "goura is an API client of Oura Cloud",
-		Long:          "goura is an Unofficial API client of Oura Cloud written in Go.\nComplete documentation is available at https://github.com/paveg/goura",
+		Short:         "goura is an API client for Oura Cloud API v2",
+		Long:          "goura is an Unofficial API client of Oura Cloud written in Go.\nSupports Oura API v2 with all available endpoints.\nComplete documentation is available at https://github.com/paveg/goura",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 	}
 	cobra.OnInitialize(initConfig)
 
+	// Existing commands
 	versionCommand := versionCommand()
 	configCommand := configCommand()
 	userInfoCommand := userInfoCommand()
 	sleepCommand := sleepCommand()
+	sleepPeriodsCommand := sleepPeriodsCommand()
+	sleepTimeCommand := sleepTimeCommand()
 	activityCommand := activityCommand()
 	readinessCommand := readinessCommand()
+
+	// New v2 commands
+	heartrateCommand := heartrateCommand()
+	spo2Command := spo2Command()
+	stressCommand := stressCommand()
+	resilienceCommand := resilienceCommand()
+	workoutCommand := workoutCommand()
+	sessionCommand := sessionCommand()
+	ringCommand := ringCommand()
 
 	configCommand.Flags().StringVarP(&Config.RedirectURL, "redirectURL", "r", "http://localhost:8989", "redirect URL")
 
 	now := time.Now()
 	lastMonth := now.AddDate(0, -1, 0)
-	for _, cmd := range []*cobra.Command{
+
+	// Commands that use date period flags
+	dateCommands := []*cobra.Command{
 		sleepCommand,
+		sleepPeriodsCommand,
+		sleepTimeCommand,
 		activityCommand,
 		readinessCommand,
-	} {
-		cmd.Flags().StringVarP(&reqDate.target, "target", "t", "", "wanna get a specific day")
-		cmd.Flags().StringVarP(&reqDate.end, "end", "e", now.Format(dateFormat), "required end date")
-		cmd.Flags().StringVarP(&reqDate.start, "start", "s", lastMonth.Format(dateFormat), "required start date")
+		spo2Command,
+		stressCommand,
+		resilienceCommand,
+		workoutCommand,
+		sessionCommand,
+		ringCommand,
 	}
 
-	for _, cmd := range []*cobra.Command{
+	for _, cmd := range dateCommands {
+		cmd.Flags().StringVarP(&reqDate.target, "target", "t", "", "fetch data for a specific day (YYYY-MM-DD)")
+		cmd.Flags().StringVarP(&reqDate.end, "end", "e", now.Format(dateFormat), "end date (YYYY-MM-DD)")
+		cmd.Flags().StringVarP(&reqDate.start, "start", "s", lastMonth.Format(dateFormat), "start date (YYYY-MM-DD)")
+	}
+
+	// All commands to register
+	allCommands := []*cobra.Command{
 		versionCommand,
 		configCommand,
 		userInfoCommand,
 		sleepCommand,
+		sleepPeriodsCommand,
+		sleepTimeCommand,
 		activityCommand,
 		readinessCommand,
-	} {
+		heartrateCommand,
+		spo2Command,
+		stressCommand,
+		resilienceCommand,
+		workoutCommand,
+		sessionCommand,
+		ringCommand,
+	}
+
+	for _, cmd := range allCommands {
 		command.AddCommand(cmd)
 	}
 
@@ -106,6 +144,7 @@ func initConfig() {
 	}
 	viper.SetDefault("ClientID", os.Getenv("OURA_CLIENT_ID"))
 	viper.SetDefault("ClientSecret", os.Getenv("OURA_CLIENT_SECRET"))
+	viper.SetDefault("AccessToken", os.Getenv("OURA_ACCESS_TOKEN"))
 	viper.SetDefault("RedirectURL", Config.RedirectURL)
 	if err := viper.Unmarshal(&Config); err != nil {
 		fmt.Println(err)
@@ -154,7 +193,8 @@ func initDate() (string, string, error) {
 
 func out(model interface{}) {
 	var buf bytes.Buffer
-	b, _ := json.Marshal(model)
-	buf.Write(b)
+	encoder := json.NewEncoder(&buf)
+	encoder.SetIndent("", "  ")
+	_ = encoder.Encode(model)
 	fmt.Println(buf.String())
 }

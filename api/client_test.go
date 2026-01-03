@@ -11,27 +11,27 @@ import (
 	"github.com/paveg/goura/oura"
 )
 
-func TestClient_UserInfo(t *testing.T) {
+func TestClient_PersonalInfo(t *testing.T) {
 	tests := []struct {
 		res  string
-		want *oura.UserInfo
+		want *oura.PersonalInfo
 	}{
 		{
 			res: `{
+  "id": "abc123",
   "age": 27,
   "weight": 80.2,
   "height": 180,
-  "gender": "male",
-  "email": "john.doe@the.domain",
-  "user_id": "abc"
+  "biological_sex": "male",
+  "email": "john.doe@the.domain"
 }`,
-			want: &oura.UserInfo{
-				Age:    27,
-				Weight: 80.2,
-				Height: 180.0,
-				Gender: "male",
-				Email:  "john.doe@the.domain",
-				UserID: "abc",
+			want: &oura.PersonalInfo{
+				ID:            "abc123",
+				Age:           27,
+				Weight:        80.2,
+				Height:        180.0,
+				BiologicalSex: "male",
+				Email:         "john.doe@the.domain",
 			},
 		},
 	}
@@ -43,10 +43,10 @@ func TestClient_UserInfo(t *testing.T) {
 			_, _ = fmt.Fprintf(w, tt.res)
 		})
 
-		got, err := client.GetUserInfo(context.Background())
+		got, err := client.GetPersonalInfo(context.Background())
 
 		if err != nil {
-			t.Fatalf("GetUserInfo was failed: got = %+v, err = %+v", got, err)
+			t.Fatalf("GetPersonalInfo was failed: got = %+v, err = %+v", got, err)
 		}
 
 		if !reflect.DeepEqual(got, tt.want) {

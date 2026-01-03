@@ -10,11 +10,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func activityCommand() *cobra.Command {
+func ringCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "activity",
-		Short: "Fetch daily activity data",
-		Long:  "Fetch daily activity data including steps, calories, and MET minutes from the Oura API v2.",
+		Use:     "ring",
+		Aliases: []string{"ring-config"},
+		Short:   "Fetch ring configuration",
+		Long:    "Fetch ring hardware and firmware details from the Oura API v2.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
 			client, err := api.NewClient(apiBaseURL, &http.Client{}, userAgent, Config.AccessToken)
@@ -27,11 +28,11 @@ func activityCommand() *cobra.Command {
 			}
 
 			datePeriod := oura.DatePeriod{StartDate: startDate, EndDate: endDate}
-			activities, err := client.GetDailyActivity(ctx, datePeriod)
+			ring, err := client.GetRingConfiguration(ctx, datePeriod)
 			if err != nil {
 				log.Fatalf("fail: %+v", err)
 			}
-			out(activities)
+			out(ring)
 
 			return nil
 		},

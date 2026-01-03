@@ -13,7 +13,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Client represents a HTTP client
+const (
+	// V2BasePath is the base path for v2 API endpoints.
+	V2BasePath = "/v2/usercollection"
+)
+
+// Client represents a HTTP client for Oura API.
 type Client struct {
 	EndpointURL *url.URL
 	HTTPClient  *http.Client
@@ -21,7 +26,7 @@ type Client struct {
 	AccessToken string
 }
 
-// NewClient creates a new http client
+// NewClient creates a new http client.
 func NewClient(endpointURL string, httpClient *http.Client, userAgent, token string) (*Client, error) {
 	parsedURL, err := url.ParseRequestURI(endpointURL)
 	if err != nil {
@@ -49,7 +54,7 @@ func (client *Client) newRequest(ctx context.Context, method string, subURL stri
 
 	req = req.WithContext(ctx)
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("User-Agent", client.UserAgent)
 	if client.AccessToken != "" {
 		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", client.AccessToken))
@@ -65,17 +70,99 @@ func decodeBody(resp *http.Response, iFace interface{}) error {
 	return decoder.Decode(iFace)
 }
 
-func (client *Client) getRequestWithDatePeriod(ctx context.Context, subURL string, datePeriod oura.DatePeriod) (*http.Response, error) {
+// checkResponse checks the HTTP response for errors.
+func checkResponse(resp *http.Response) error {
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		return nil
+	}
+
+	body, _ := io.ReadAll(resp.Body)
+	return fmt.Errorf("API error: status=%d, body=%s", resp.StatusCode, string(body))
+}
+
+// getWithDatePeriod makes a GET request with date range query parameters.
+func (client *Client) getWithDatePeriod(ctx context.Context, subURL string, datePeriod oura.DatePeriod) (*http.Response, error) {
 	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	httpRequest.Header.Set("Content-Type", "application/json")
 	q := httpRequest.URL.Query()
-	q.Add("start", datePeriod.StartDate)
-	q.Add("end", datePeriod.EndDate)
+	if datePeriod.StartDate != "" {
+		q.Add("start_date", datePeriod.StartDate)
+	}
+	if datePeriod.EndDate != "" {
+		q.Add("end_date", datePeriod.EndDate)
+	}
 	httpRequest.URL.RawQuery = q.Encode()
+
+	httpResponse, err := client.HTTPClient.Do(httpRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	return httpResponse, nil
+}
+
+// getWithDateTimePeriod makes a GET request with datetime range query parameters.
+func (client *Client) getWithDateTimePeriod(ctx context.Context, subURL string, period oura.DateTimePeriod) (*http.Response, error) {
+	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	q := httpRequest.URL.Query()
+	if period.StartDateTime != "" {
+		q.Add("start_datetime", period.StartDateTime)
+	}
+	if period.EndDateTime != "" {
+		q.Add("end_datetime", period.EndDateTime)
+	}
+	httpRequest.URL.RawQuery = q.Encode()
+
+	httpResponse, err := client.HTTPClient.Do(httpRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	return httpResponse, nil
+}
+
+// getWithNextToken makes a GET request with pagination token.
+func (client *Client) getWithNextToken(ctx context.Context, subURL string, datePeriod oura.DatePeriod, nextToken string) (*http.Response, error) {
+	httpRequest, err := client.newRequest(ctx, "GET", subURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	q := httpRequest.URL.Query()
+	if datePeriod.StartDate != "" {
+		q.Add("start_date", datePeriod.StartDate)
+	}
+	if datePeriod.EndDate != "" {
+		q.Add("end_date", datePeriod.EndDate)
+	}
+	if nextToken != "" {
+		q.Add("next_token", nextToken)
+	}
+	httpRequest.URL.RawQuery = q.Encode()
+
+	httpResponse, err := client.HTTPClient.Do(httpRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	return httpResponse, nil
+}
+
+// getByDocumentID makes a GET request for a single document by ID.
+func (client *Client) getByDocumentID(ctx context.Context, subURL string, documentID string) (*http.Response, error) {
+	fullURL := fmt.Sprintf("%s/%s", subURL, documentID)
+	httpRequest, err := client.newRequest(ctx, "GET", fullURL, nil)
+	if err != nil {
+		return nil, err
+	}
+
 	httpResponse, err := client.HTTPClient.Do(httpRequest)
 	if err != nil {
 		return nil, err

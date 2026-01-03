@@ -10,11 +10,12 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func activityCommand() *cobra.Command {
+func spo2Command() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "activity",
-		Short: "Fetch daily activity data",
-		Long:  "Fetch daily activity data including steps, calories, and MET minutes from the Oura API v2.",
+		Use:     "spo2",
+		Aliases: []string{"oxygen"},
+		Short:   "Fetch daily SpO2 (blood oxygen) data",
+		Long:    "Fetch daily SpO2 (blood oxygen saturation) data from the Oura API v2. Requires Gen 3 ring or later.",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			ctx := context.Background()
 			client, err := api.NewClient(apiBaseURL, &http.Client{}, userAgent, Config.AccessToken)
@@ -27,11 +28,11 @@ func activityCommand() *cobra.Command {
 			}
 
 			datePeriod := oura.DatePeriod{StartDate: startDate, EndDate: endDate}
-			activities, err := client.GetDailyActivity(ctx, datePeriod)
+			spo2, err := client.GetDailySpo2(ctx, datePeriod)
 			if err != nil {
 				log.Fatalf("fail: %+v", err)
 			}
-			out(activities)
+			out(spo2)
 
 			return nil
 		},

@@ -39,7 +39,7 @@ func TestClient_GetPersonalInfo(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetPersonalInfo(context.Background())
@@ -95,7 +95,7 @@ func TestClient_GetDailyActivity(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetDailyActivity(context.Background(), tt.datePeriod)
@@ -147,7 +147,7 @@ func TestClient_GetDailyReadiness(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetDailyReadiness(context.Background(), tt.datePeriod)
@@ -199,7 +199,7 @@ func TestClient_GetDailySleep(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetDailySleep(context.Background(), tt.datePeriod)
@@ -258,7 +258,7 @@ func TestClient_GetSleep(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetSleep(context.Background(), tt.datePeriod)
@@ -317,7 +317,7 @@ func TestClient_GetHeartRate(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetHeartRate(context.Background(), tt.period)
@@ -376,7 +376,7 @@ func TestClient_GetWorkouts(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetWorkouts(context.Background(), tt.datePeriod)
@@ -431,7 +431,7 @@ func TestClient_GetDailyStress(t *testing.T) {
 
 	for _, tt := range tests {
 		mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			_, _ = fmt.Fprintf(w, tt.res)
+			_, _ = fmt.Fprint(w, tt.res)
 		})
 
 		got, err := client.GetDailyStress(context.Background(), tt.datePeriod)

@@ -15,9 +15,9 @@ import (
 
 const (
 	// OuraAuthURL is the OAuth2 authorization endpoint.
-	OuraAuthURL = "https://cloud.ouraring.com/oauth/authorize"
+	OuraAuthURL = "https://cloud.ouraring.com/oauth/authorize" //nolint:gosec // URL, not a credential
 	// OuraTokenURL is the OAuth2 token endpoint.
-	OuraTokenURL = "https://api.ouraring.com/oauth/token"
+	OuraTokenURL = "https://api.ouraring.com/oauth/token" //nolint:gosec // URL, not a credential
 	// DefaultRedirectURL is the default local callback URL.
 	DefaultRedirectURL = "http://localhost:8989"
 )
@@ -180,6 +180,7 @@ func closer(l net.Listener) {
 
 func serveAuthCallback(l net.Listener, expectedState string, codeChan chan string, errChan chan error) {
 	server := &http.Server{
+		ReadHeaderTimeout: 10 * time.Second,
 		Handler: http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 			if req.URL.Path == "/" {
 				// Check for authorization code

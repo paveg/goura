@@ -23,7 +23,7 @@ goura provides both a Go library and CLI tool to access your Oura Ring health da
 
 ## Requirements
 
-- Go 1.21 or later
+- Go 1.24 or later
 - Oura Ring with active membership (Gen3/Ring 4 require membership for API access)
 
 ## Installation

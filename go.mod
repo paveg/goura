@@ -1,6 +1,6 @@
 module github.com/paveg/goura
 
-go 1.24.0
+go 1.26.0
 
 require (
 	github.com/mattn/go-shellwords v1.0.12
@@ -9,7 +9,7 @@ require (
 	github.com/skratchdot/open-golang v0.0.0-20200116055534-eef842397966
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
-	golang.org/x/oauth2 v0.34.0
+	golang.org/x/oauth2 v0.37.0
 )
 
 require (
